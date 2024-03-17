@@ -80,7 +80,6 @@
 					<li>Definition of Done</li>
 					<li>Challenges</li>
 					<li>Solutions</li>
-					<li>Conclusions</li>
 					<li>Q&A</li>
 				</ol>
 				<aside class="notes">
@@ -343,13 +342,196 @@
 				</ul>
 				<aside class="notes">
 					So once again three big challenges.
+				</aside>
 			</section>
 
 			<section data-background-image="assets/kittens/res-2.webp" data-background-opacity="0.2">
 				<h2>Solutions</h2>
 				<aside class="notes">
 					Now let's see how we solved those.
+					I'll give you a toolbox of <b>8</b> things. Most of this, we learned the hard way.
+					Most of these, things we didn't do. In my opinion we succeeded (well, yes, in my opinion, we
+					succeeded 🙂) because our mistakes were compensated by several factors:
+					1. some people voluntarily worked overtime;
+					2. some people went far beyond their tech stack and business logic;
+					3. we still did many things well;
+					4. we were somewhat lucky 🙂
 				</aside>
+			</section>
+
+			<section>
+				<p>Increase urgency</p>
+				<img src="assets/slack-1.png" alt="Screenshot from Slack" />
+				<aside class="notes">
+					Tool 1. Increase urgency.
+					<br />
+					It's <i>natural</i> that tests are less important than real users.
+					We have to very explicitly define who does what by when when tests fail. Don't just rely on culture.
+					This is <i>good culture</i>.
+					Our goal requires <i>more</i>.
+				</aside>
+			</section>
+
+			<section>
+				<p>Increase urgency</p>
+				<img src="assets/urgency.png" alt="Diagram" />
+				<aside class="notes">
+					There is a widespread belief: tests are optional because they are unstable.
+					The real causality is in the opposite direction.
+					We must instruct people to pause other work for investigation.
+					We must compensate people if it's outside of working hours. Especially if the company operates in
+					distant time zones.
+					If that is unsustainable: we turn everything off, we analyze what we are doing wrong, and we turn it
+					on again.
+					If we have no ideas, we either reduce the amount of tests or we conclude that this is not for us and
+					we shut down the entire initiative.
+				</aside>
+			</section>
+
+			<section>
+				<p>Analyze every failure</p>
+				<aside class="notes">
+					Tool 2. Analyze every failure.
+					I will show you two terrible slides. You don't have to read them, just grasp
+					the structure. This is
+					just a helicopter view of
+					what it looked like.
+				</aside>
+			</section>
+
+			<section>
+				<p>Analyze every failure</p>
+				<!-- <section data-background-image="assets/table-failures.png" data-background-size="contain"> -->
+				<img src="assets/table-failures.png" alt="Screenshot from Spreadsheets" />
+				<aside class="notes">
+					<br />
+					Analyze:
+					<br />
+					- [horizontal gesture] Which part of the product?
+					<br />
+					- [vertical gesture] Which part of the stack?
+					<br />
+					- How many failures?
+					<br />
+					- Who?
+					<br />
+					- How to prevent it in the future?
+					<br />
+
+					I admit this idea of analyzing every failure is fairly obvious. What is not obvious and what scared
+					me in the very beginning is it might seem that it's not worth trying because there might be too many
+					errors.
+
+					It appeared to be alright. In our reality, for a combination of reasons, it was a somewhat full-time
+					job, but it still fit into one brain.
+
+					If we do this, we can get to... [next slide]
+				</aside>
+			</section>
+
+			<section>
+				<!-- <section data-background-image="assets/table-actions.png" data-background-size="contain"> -->
+				<p>Analyze every failure</p>
+				<img src="assets/table-actions.png" alt="Screenshot from Spreadsheets" />
+				<aside class="notes">
+					... this. This gives us actionability. We can see in which order to do the improvements and what
+					kind of improvements there are. Be it's technical or people work.
+					<br />
+					Note: identifying the who does not by any means violate the blameless culture (at least because
+					there's <i>just no blame</i> in saying, e.g. We weren't able to fetch Docker images because
+					Microsoft registry was down so the FE Platform team should build a cache).
+					We can think of it like this: we are measuring processes, not people. We don't have to measure
+					people because we just assume good intention.
+					<br />
+					Now this thing does not work without tool 3.
+				</aside>
+			</section>
+
+			<section>
+				<p>Make accountable people from the entire stack</p>
+
+				[todo diagram]
+				<aside class="notes">
+					Tool 3. Make accountable people from the entire technical stack.
+					<br />
+					We didn’t do it — FE engineers led the project — and we find ourselves in situations where BE people
+					whom we needed to do investigations and code improvements had other priorities.
+					<br />
+					Remember: our goal is to build a stable app. It doesn't work if we just ask front-ended engineers to
+					build stable tests.
+				</aside>
+			</section>
+
+			<section>
+				<p>Educate</p>
+				[todo a slightly different diagram]
+				<aside class="notes">
+					Tool 4. Educate.
+
+					1. Teach BE engineers to read the test reports.
+					2. Teach FE engineers to analyze server logs.
+				</aside>
+			</section>
+
+			<section>
+				<p>Assign senior engineers</p>
+				<aside class="notes">
+					Tool 5. Assign senior engineers.
+					I realize it's hard to challenge the idea of delegating constructing the tests to more junior
+					engineers. However, it's a hard job to debug the failure when looking at a test report.
+
+					Full disclosure: we didn’t do it. Our so called FE Platform helped different teams - but we lost
+					some stability because that took longer.
+				</aside>
+			</section>
+
+			<section>
+				<p>Increase visibility</p>
+				<img src="assets/known-errors.png" alt="Screenshot from GH" />
+				<aside class="notes">
+					Tool 6. Increase visibility.
+					First: it's hard to calculate the required stability, at least because it’s different for different
+					people across the company. Even if you're in the green zone, there are incidents where people would
+					say "I didn't run E2E tests because I know they're flaky.”
+					Second: we anyway need a way to tolerate the instabilities because every issue significantly drops
+					the stability for the short time window.
+
+					Fun fact: when we asked people their perception of the stability, it appeared higher than the
+					reality.
+				</aside>
+			</section>
+
+			<section>
+				<p>Start small</p>
+				<p class="fragment">and never go too big 🙂</p>
+				<aside class="notes">
+					Tool 7. Start small.
+					We started with three teams right away. It took us time to reach stability because there were just
+					too many problems in the beginning.
+					<br /><br />[reveal fragment]<br /><br />
+					And never go too big :) Because of everything that I said, this seemingly simple tool is very
+					expensive.
+				</aside>
+			</section>
+
+			<section>
+				<ul>
+					<li>Inrease urgency</li>
+					<li>Analyze every failure</li>
+					<li>Make accountable people from the entire stack</li>
+					<li>Educate</li>
+					<li>Assign senior engineers</li>
+					<li>Increase visibility</li>
+					<li>Start small</li>
+				</ul>
+				<aside class="notes">
+					One conclusion. This is the opposite of simplicity. It's an expensive tool. On every step, validate
+					the return on the investment. This is not the only way to test products.
+				</aside>
+			</section>
+
+			<section>
+				<h3>Q&A</h3>
 			</section>
 		</div>
 	</div>
