@@ -436,6 +436,13 @@
 				<aside class="notes">
 					... this. This gives us actionability. We can see in which order to do the improvements and what
 					kind of improvements there are. Be it's technical or people work.
+					This slide says:
+					<br />
+					- 13 failures in Q2 wouldn't have happened if the checks were mandatory for pull requests (which was
+					not the case)
+					- 10 can be fixed by guiding people how to write deterministic tests
+					- 11 were one-off glitches which we have to live with because it brings unreasonable
+					overhead to fix them. That happens too.
 					<br />
 					Note: identifying the who does not by any means violate the blameless culture (at least because
 					there's <i>just no blame</i> in saying, e.g. We weren't able to fetch Docker images because
@@ -450,7 +457,17 @@
 			<section>
 				<p>Make accountable people from the entire stack</p>
 
-				[todo diagram]
+				<div style="height: 80vh;">
+					<svg width="100%" height="100%" viewBox="0 0 100 100">
+						<circle cx="32" cy="30" r="18" fill="none" stroke="white" />
+						<circle cx="68" cy="30" r="18" fill="none" stroke="white" />
+						<circle cx="50" cy="61" r="18" fill="none" stroke="white" />
+						<text x="32" y="33" text-anchor="middle" font-size="10" fill="white">BE</text>
+						<text x="68" y="33" text-anchor="middle" font-size="10" fill="white">FE</text>
+						<text x="50" y="64" text-anchor="middle" font-size="10" fill="white">SRE</text>
+					</svg>
+				</div>
+
 				<aside class="notes">
 					Tool 3. Make accountable people from the entire technical stack.
 					<br />
@@ -464,7 +481,18 @@
 
 			<section>
 				<p>Educate</p>
-				[todo a slightly different diagram]
+
+				<div style="height: 80vh;">
+					<svg width="100%" height="100%" viewBox="0 0 100 100">
+						<circle cx="32" cy="30" r="18" fill="none" stroke="rgba(255,255,255,0.05)" />
+						<circle cx="68" cy="30" r="18" fill="none" stroke="white" />
+						<circle cx="50" cy="61" r="18" fill="none" stroke="white" />
+						<circle cx="36" cy="34" r="24" fill="none" stroke-width="4" stroke="green" />
+						<text x="32" y="33" text-anchor="middle" font-size="10" fill="white">BE</text>
+						<text x="71" y="33" text-anchor="middle" font-size="10" fill="white">FE</text>
+						<text x="50" y="68" text-anchor="middle" font-size="10" fill="white">SRE</text>
+					</svg>
+				</div>
 				<aside class="notes">
 					Tool 4. Educate.
 
@@ -475,13 +503,25 @@
 
 			<section>
 				<p>Assign senior engineers</p>
+
+				<div style="height: 80vh;">
+					<svg width="100%" height="100%" viewBox="0 0 100 100">
+						<circle cx="32" cy="30" r="18" fill="none" stroke="rgba(255,255,255,0.1)" />
+						<circle cx="68" cy="30" r="18" fill="none" stroke="rgba(255,255,255,0.1)" />
+						<circle cx="50" cy="61" r="18" fill="none" stroke="rgba(255,255,255,0.1)" />
+						<circle cx="32" cy="30" r="24" fill="none" stroke-width="4" stroke="green" />
+						<text x="32" y="33" text-anchor="middle" font-size="10" fill="white">BE</text>
+						<text x="68" y="33" text-anchor="middle" font-size="10" fill="white">FE</text>
+						<text x="50" y="64" text-anchor="middle" font-size="10" fill="white">SRE</text>
+					</svg>
+				</div>
 				<aside class="notes">
 					Tool 5. Assign senior engineers.
 					I realize it's hard to challenge the idea of delegating constructing the tests to more junior
 					engineers. However, it's a hard job to debug the failure when looking at a test report.
 
-					Full disclosure: we didn’t do it. Our so called FE Platform helped different teams - but we lost
-					some stability because that took longer.
+					Full disclosure: we didn’t do it. In many cases, we still had to call senior engineers - and
+					we lost some stability because that took longer.
 				</aside>
 			</section>
 
@@ -490,9 +530,20 @@
 				<img src="assets/known-errors.png" alt="Screenshot from GH" />
 				<aside class="notes">
 					Tool 6. Increase visibility.
-					First: it's hard to calculate the required stability, at least because it’s different for different
-					people across the company. Even if you're in the green zone, there are incidents where people would
+					Try to improve the developer experience of your engineers during the times when the stability
+					requirements are not met. This is one thing we did. It says the test failed, but it also mentions
+					the known issues. There is one known issue. This is how the symptoms look like. The workaround is to
+					rerun the job.
+
+					This is an attempt to tolerate instability. Yes, these failures happened. But if we give people good
+					developer experience, these failures might have a very limited impact on their <i>perception</i> of
+					the stability.
+
+					First: it's hard to calculate the required stability because we're trying to predict human
+					perception, which is different for everyone across the company. Even if you're in the green zone,
+					there are incidents where people would
 					say "I didn't run E2E tests because I know they're flaky.”
+
 					Second: we anyway need a way to tolerate the instabilities because every issue significantly drops
 					the stability for the short time window.
 
@@ -510,7 +561,7 @@
 					too many problems in the beginning.
 					<br /><br />[reveal fragment]<br /><br />
 					And never go too big :) Because of everything that I said, this seemingly simple tool is very
-					expensive.
+					expensive, and the price is rather organizational and technical.
 				</aside>
 			</section>
 
