@@ -37,6 +37,11 @@
 <body>
 	<div class="reveal" data-preply-ds-theme="tokyo-ui">
 		<div class="slides">
+			<section>
+				<aside class="notes">
+					Empty slide.
+				</aside>
+			</section>
 
 			<section>
 				<h2>To E2E-Test or Not To E2E-Test?<br />That Was the Question</h2>
@@ -633,9 +638,23 @@
 		// - https://revealjs.com/config/
 		Reveal.initialize({
 			hash: true,
+			controls: false,
+			hideCursorTime: 50,
 
 			// Learn about plugins: https://revealjs.com/plugins/
 			plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+		});
+	</script>
+	<script>
+		// Go forward on left mouse click.
+		document.addEventListener('click', function (event) {
+			Reveal.next();
+		});
+		// Go backward on the right mouse click.
+		document.addEventListener('contextmenu', function (event) {
+			Reveal.prev();
+			// Prevent the context menu from showing up.
+			event.preventDefault();
 		});
 	</script>
 	<script src="socket.io/socket.io.js"></script>
