@@ -60,7 +60,7 @@
 						<img src="assets/qr-linkedin.png" alt="QR code for LinkedIn profile" />
 						</p>
 						<aside class="notes">
-							My name is Sergii Grebeniuk.
+							My name is Sergii.
 							I'm Ukrainian, living in Poland.
 							I've been working in the so-called FE Platform team at Preply for almost seven years, mostly
 							constructing build pipelines and developer tooling, and leading cross-team projects.
@@ -104,6 +104,8 @@
 			<section data-background-video="assets/test-recording.mp4" data-background-size="contain">
 				<!-- data-background-video-loop="true" -->
 				<aside class="notes">
+					[Check if the recording is playing]
+					<br />
 					Here is a recording what we want.
 					In this example, the robo-user buys a subscription. He gives us his credit card, we
 					process the payment, the user sees the lessons or his balance.
@@ -159,6 +161,8 @@
 					Neither this is about detecting what we change and only retesting that.
 					those would all be lower level tests. I'm not a fan of the term integration tests — but that would
 					be that direction.
+					<br />
+					Spoiler: that all would not be wrong.
 				</aside>
 			</section>
 
@@ -263,6 +267,7 @@
 					business hours in different time zones".
 					The error budget barely exists. One failure ruins the stats for the entire day.
 					Only 6 failures monthly are tolerable.
+					<br />
 					Important nuance: we deploy continuously. A deployment happens automatically once a PR gets merged
 					to master. There are dozens of deployments every day. For those who deploy every day or every week,
 					this challenge is not so hard.
@@ -358,7 +363,7 @@
 				<h2>Solutions</h2>
 				<aside class="notes">
 					Now let's see how we solved those.
-					I'll give you a toolbox of <b>eight</b> instruments. Most of this, we learned the hard way.
+					I'll give you a toolbox of <b>seven</b> instruments. Most of this, we learned the hard way.
 					Most of these, things we didn't do. In my opinion we succeeded (well, yes, in my opinion, we
 					succeeded 🙂) because a) we still did many things well b) our mistakes were compensated by several
 					factors:
@@ -423,6 +428,8 @@
 					on again.
 					If we have no ideas, we either reduce the amount of tests or we conclude that this is not for us and
 					we shut down the entire initiative.
+					<br />
+					So this one I called increase the urgency.
 				</aside>
 			</section>
 
@@ -490,7 +497,9 @@
 					We can think of it like this: we are measuring processes, not people. We don't have to measure
 					people because we just assume good intention.
 					<br />
-					Now this thing does not work without tool 3.
+					So this was about analyzing every failure.
+					<br />
+					And it does not work without tool 3.
 				</aside>
 			</section>
 
