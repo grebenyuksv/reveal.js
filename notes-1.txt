@@ -1,0 +1,159 @@
+Empty slide.
+
+-------------------------------------------------------
+
+Hello, everyone, happy to see you all here today.
+I will talk about end-to-end tests. At Preply we have built them successfully, but we learned a lot
+on the way.
+I will share those learnings with you so that you're in a better position to decide whether you want
+that for your business.
+
+-------------------------------------------------------
+
+My name is Sergii.
+I'm Ukrainian, living in Poland.
+I've been working in the so-called FE Platform team at Preply for almost seven years, mostly
+constructing build pipelines and developer tooling, and leading cross-team projects.
+This QR code leads to my LinkedIn profile.
+
+-------------------------------------------------------
+
+I've been at Preply for around seven years, mostly building, mostly working on build
+pipelines and
+developer tooling, and leading cross-team projects.
+
+-------------------------------------------------------
+
+Here is the structure of this. It should all take around 20 minutes plus 5 minutes for
+questions in the end.
+So basically problem statement, challenges, solutions, conclusions, questions.
+
+-------------------------------------------------------
+
+So, let's start with the problem statement.
+
+-------------------------------------------------------
+
+[Check if the recording is playing]
+Here is a recording what we want.
+In this example, the robo-user buys a subscription. He gives us his credit card, we
+process the payment, the user sees the lessons or his balance.
+
+-------------------------------------------------------
+
+We verify every deployment that way. If anything fails, the deployment stops.
+Those checks are cross-service both horizontally and vertically.
+The users go through different front ends, which call different back ends, and in some cases
+even different databases under the hood.
+We only cover the happy paths of the most important user journeys.
+This is the top level of the testing pyramid, testing trophy, or any other geometrical shape
+We do that with playwright, which is sort of a state-of-the art technology for these things, and
+we have around 100 suites.
+
+-------------------------------------------------------
+
+This is about E2E tests, the highest level possible.
+We neither mock 3rd-party services (e.g. payment providers), nor in-house services (e.g. our own
+APIs).
+Neither this is about detecting what we change and only retesting that.
+those would all be lower level tests. I'm not a fan of the term integration tests — but that would
+be that direction.
+Spoiler: that all would not be wrong.
+
+-------------------------------------------------------
+
+Now this is not about the tactical technical things like avoiding timeouts or retries. These are
+relatively easy technical problems compared to ... [switch slide]
+
+-------------------------------------------------------
+
+... the organizational problems, which are harder and which are gonna be my focus.
+Building those tests technically is not rocket science whatsoever, whereas who does what by
+when has to be answered meticulously.
+This Who-does-What-by-When is a definition of management, which resonates with me a lot (it's not
+mine, I heard it somewhere). Just think of it for a second: who does what by when. This is sort of
+cool,
+huh? I hope this resonates with you as much as it does with me.
+So, in my opinion, this is the hardest problem that we have to
+solve, but there is a twist.
+This problem requires fast reaction by different people in different circumstances.
+So for each of those possible situations, the managerial decisions should be made in advance. This
+test will fail and when that happens the relevant people should immediately jump into it and
+investigate.
+This talk should be relevant for technical leaders or entry-level managers depending on who at a
+company answers this who does what by when question.
+
+-------------------------------------------------------
+
+Now let's see why it is hard.
+The problem is that many things have to happen simultaneously.
+It's like trying to make all these cute kittens sit in a row for a picture.
+There's gonna be three challenges.
+
+-------------------------------------------------------
+
+Before we start on the challenges.
+Let's align around the basics. Stable tests mean no false positives.
+Measuring is easy: we run them all regularly on master.
+Your mileage may vary, but this is what works for us:
+- All tests pass in 98% cases — enough to block merges or deployments
+- All tests pass in 90% — will be used as safety net by most engineers
+- All tests passed in 80% cases — will be used as safety net by a half of engineers
+- <80% is absolutely useless
+Important nuance: we are calculating how many perfect pictures we get. Not how aligned individual kittens are on average. One naughty kitten ruins
+the
+entire picture. If that's always the case, the stability is zero.
+Now let's see why that goal is very ambitious.
+
+-------------------------------------------------------
+
+Challenge number one: there is little room for error.
+We run the tests on master 14 times per day, which roughly means "constantly within our
+business hours in different time zones".
+The error budget barely exists. One failure ruins the stats for the entire day.
+Only 6 failures monthly are tolerable.
+Important nuance: we deploy continuously. A deployment happens automatically once a PR gets merged
+to master. There are dozens of deployments every day. For those who deploy every day or every week,
+this challenge is not so hard.
+
+-------------------------------------------------------
+
+Challenge number two: there are many moving parts.
+This comes naturally to you once you think of it - but not everyone bothers to think.
+The problem statement does not sound like "Build Stable Tests". It's "Build a Stable App" in the
+first
+place.
+Now building a stable app does sound as hard as it is.
+It's the business logic stability.
+Multiplied by infrastructure stability.
+Multiplied by 3rd-party components' stability. And so on.
+
+-------------------------------------------------------
+
+Now, among all the challenges, this is the challenge.
+Challenge number three, the blast radius.
+A single real user never uses all features of the product — but any E2E test failure blocks
+the entire company.
+This means the testing environment has to be in a way more stable than production.
+
+-------------------------------------------------------
+
+So once again three big challenges.
+
+-------------------------------------------------------
+
+Now let's see how we solved those.
+I'll give you a toolbox of seven instruments. Most of this, we learned the hard way.
+Most of these, things we didn't do. In my opinion we succeeded (well, yes, in my opinion, we
+succeeded 🙂) because a) we still did many things well b) our mistakes were compensated by several
+factors:
+1. some people voluntarily worked overtime;
+2. some people went far beyond their tech stack and business logic;
+3. we were somewhat lucky. All possible issues just didn't happen at the same time. 🙂
+
+-------------------------------------------------------
+
+Tool 1. Increase urgency.
+It's natural that tests are less important than real users.
+We have to
+x

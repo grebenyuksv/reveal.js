@@ -1,0 +1,338 @@
+Empty slide.
+
+-------------------------------------------------------
+
+Hello, everyone, happy to see you all here today.
+I will talk about end-to-end tests. At Preply we have built them successfully, but we learned a lot
+on the way.
+I will share those learnings with you so that you're in a better position to decide whether you want
+that for your business.
+
+-------------------------------------------------------
+
+My name is Sergii.
+I'm Ukrainian, living in Poland.
+I've been working in the so-called FE Platform team at Preply for almost seven years, mostly
+constructing build pipelines and developer tooling, and leading cross-team projects.
+This QR code leads to my LinkedIn profile.
+
+-------------------------------------------------------
+
+I've been at Preply for around seven years, mostly building, mostly working on build
+pipelines and
+developer tooling, and leading cross-team projects.
+
+-------------------------------------------------------
+
+Here is the structure of this. It should all take around 20 minutes plus 5 minutes for
+questions in the end.
+So basically problem statement, challenges, solutions, conclusions, questions.
+
+-------------------------------------------------------
+
+So, let's start with the problem statement.
+
+-------------------------------------------------------
+
+[Check if the recording is playing]
+Here is a recording what we want.
+In this example, the robo-user buys a subscription. He gives us his credit card, we
+process the payment, the user sees the lessons or his balance.
+
+-------------------------------------------------------
+
+We verify every deployment that way. If anything fails, the deployment stops.
+
+[reveal fragment]
+
+Those checks are cross-service both horizontally and vertically.
+The users go through different front ends, which call different back ends, and in some cases
+even different databases under the hood.
+
+[reveal fragment]
+
+We only cover the happy paths of the most important user journeys.
+This is the top level of the testing pyramid, testing trophy, or any other geometrical shape
+
+[reveal fragment]
+
+We do that with playwright, which is sort of a state-of-the art technology for these things, and
+we have around 100 suites.
+
+-------------------------------------------------------
+
+This is about E2E tests, the highest level possible.
+We neither mock 3rd-party services (e.g. payment providers), nor in-house services (e.g. our own
+APIs).
+Neither this is about detecting what we change and only retesting that.
+those would all be lower level tests. I'm not a fan of the term integration tests — but that would
+be that direction.
+Spoiler: that all would not be wrong.
+
+-------------------------------------------------------
+
+Now this is not about the tactical technical things like avoiding timeouts or retries. These are
+relatively easy technical problems compared to ... [switch slide]
+
+-------------------------------------------------------
+
+... the organizational problems, which are harder and which are gonna be my focus.
+Building those tests technically is not rocket science whatsoever, whereas who does what by
+when has to be answered meticulously.
+This Who-does-What-by-When is a definition of management, which resonates with me a lot (it's not
+mine, I heard it somewhere). Just think of it for a second: who does what by when. This is sort of
+cool,
+huh? I hope this resonates with you as much as it does with me.
+So, in my opinion, this is the hardest problem that we have to
+solve, but there is a twist.
+
+[reveal fragment]
+
+This problem requires fast reaction by different people in different circumstances.
+So for each of those possible situations, the managerial decisions should be made in advance. This
+test will fail and when that happens the relevant people should immediately jump into it and
+investigate.
+This talk should be relevant for technical leaders or entry-level managers depending on who at a
+company answers this who does what by when question.
+
+-------------------------------------------------------
+
+Now let's see why it is hard.
+The problem is that many things have to happen simultaneously.
+It's like trying to make all these cute kittens sit in a row for a picture.
+There's gonna be three challenges.
+
+-------------------------------------------------------
+
+Before we start on the challenges.
+Let's align around the basics. Stable tests mean no false positives.
+Measuring is easy: we run them all regularly on master.
+Your mileage may vary, but this is what works for us:
+- All tests pass in 98% cases — enough to block merges or deployments
+- All tests pass in 90% — will be used as safety net by most engineers
+- All tests passed in 80% cases — will be used as safety net by a half of engineers
+- <80% is absolutely useless
+Important nuance: we are calculating how many perfect pictures we get. Not how aligned individual kittens are on average. One naughty kitten ruins
+the
+entire picture. If that's always the case, the stability is zero.
+Now let's see why that goal is very ambitious.
+
+-------------------------------------------------------
+
+Challenge number one: there is little room for error.
+We run the tests on master 14 times per day, which roughly means "constantly within our
+business hours in different time zones".
+The error budget barely exists. One failure ruins the stats for the entire day.
+Only 6 failures monthly are tolerable.
+Important nuance: we deploy continuously. A deployment happens automatically once a PR gets merged
+to master. There are dozens of deployments every day. For those who deploy every day or every week,
+this challenge is not so hard.
+
+-------------------------------------------------------
+
+Challenge number two: there are many moving parts.
+This comes naturally to you once you think of it - but not everyone bothers to think.
+The problem statement does not sound like "Build Stable Tests". It's "Build a Stable App" in the
+first
+place.
+
+[reveal fragment]
+
+Now building a stable app does sound as hard as it is.
+
+[reveal fragment]
+
+It's the business logic stability.
+
+[reveal fragment]
+
+Multiplied by infrastructure stability.
+
+[reveal fragment]
+
+Multiplied by 3rd-party components' stability. And so on.
+
+-------------------------------------------------------
+
+Now, among all the challenges, this is the challenge.
+Challenge number three, the blast radius.
+A single real user never uses all features of the product — but any E2E test failure blocks
+the entire company.
+This means the testing environment has to be in a way more stable than production.
+
+-------------------------------------------------------
+
+So once again three big challenges.
+
+-------------------------------------------------------
+
+Now let's see how we solved those.
+I'll give you a toolbox of <b>seven</b> instruments. Most of this, we learned the hard way.
+Most of these, things we didn't do. In my opinion we succeeded (well, yes, in my opinion, we
+succeeded 🙂) because a) we still did many things well b) our mistakes were compensated by several
+factors:
+1. some people voluntarily worked overtime;
+2. some people went far beyond their tech stack and business logic;
+3. we were somewhat lucky. All possible issues just didn't happen at the same time. 🙂
+
+---------------------------------------------------------------------
+
+Tool 1. Increase urgency.
+<br />
+It's <i>natural</i> that tests are less important than real users.
+We have to very explicitly define who does what by when when tests fail. Don't just rely on culture.
+This is <i>good culture</i>.
+Our goal requires <i>more</i>.
+
+---------------------------------------------------------------------
+
+There is a widespread belief: tests are optional because they are unstable.
+The real causality is in the opposite direction.
+We must instruct people to pause other work for investigation.
+We must compensate people if it's outside of working hours. Especially if the company operates in
+distant time zones.
+If that is unsustainable: we turn everything off, we analyze what we are doing wrong, and we turn it
+on again.
+If we have no ideas, we either reduce the amount of tests or we conclude that this is not for us and
+we shut down the entire initiative.
+<br />
+So this one I called increase the urgency.
+
+---------------------------------------------------------------------
+
+Tool 2. Analyze every failure.
+I will show you two terrible slides. You don't have to read them, just grasp
+the structure. This is
+just a helicopter view of
+what it looked like.
+
+---------------------------------------------------------------------
+
+Analyze:
+<br />
+- [horizontal gesture] Which part of the product?
+<br />
+- [vertical gesture] Which part of the stack?
+<br />
+- How many failures?
+<br />
+- Who?
+<br />
+- How to prevent it in the future?
+<br />
+
+I admit this idea of analyzing every failure is fairly obvious. What is not obvious and what scared
+me in the very beginning is it might seem that it's not worth trying because there might be too many
+errors.
+
+It appeared to be alright. In our reality, for a combination of reasons, it was a somewhat full-time
+job, but it still fit into one brain.
+
+If we do this, we can get to... [next slide]
+
+---------------------------------------------------------------------
+
+... this. This gives not only actionability but also the scope (and thus the cost) of the next
+iteration. We can see in
+which order to do the improvements and what
+kind of improvements there are. Be it's technical or people work.
+This slide says:
+<br />
+- 13 failures in Q2 wouldn't have happened if the checks were mandatory for pull requests (which was
+not the case)
+- 10 can be fixed by guiding people how to write deterministic tests
+- 11 were one-off glitches which we have to live with because it brings unreasonable
+overhead to fix them. That happens too.
+<br />
+Note: identifying the who does not by any means violate the blameless culture (at least because
+there's <i>just no blame</i> in saying, e.g. We weren't able to fetch Docker images because
+Microsoft registry was down so the FE Platform team should build a cache).
+We can think of it like this: we are measuring processes, not people. We don't have to measure
+people because we just assume good intention.
+<br />
+So this was about analyzing every failure.
+<br />
+And it does not work without tool 3.
+
+---------------------------------------------------------------------
+
+Tool 3. Please, make accountable people from the entire technical stack, I can't stress this more.
+<br />
+We didn’t do it — FE engineers led the project — and we find ourselves in situations where BE people
+whom we needed to do investigations and code improvements had other priorities.
+<br />
+I will illustrate this with one example of a specific problem that we still have to be honest with
+you.
+We observed specific tests failing randomly. The buttons just weren't showing up where they should.
+When we talked to the authors of the tests, they couldn't explain it. But they said the buttons
+should be there because that was an A/B test that got scaled long ago.
+that the front-end platform team analyzed the reports closer and saw that the back-end was returning
+to the front-end. The response is saying that that A/B test was not scaled.
+We talked to the experimentation team. They couldn't explain it because that code was constructed by
+someone else before the experimentation team was even created.
+Then we asked the backend platform to help us with the investigation but it was not in their
+priorities.
+So now we just live with it. The problem is still there, but because it doesn't strike <i>very</i>
+often. It's not a high priority for the owners of those mechanisms.
+<br />
+I hope this example illustrates why it's not enough to ask FE engineers to build stable tests.
+We need to make a stable product and that could only be done by people from the entire
+stack.
+
+---------------------------------------------------------------------
+
+Tool 4. Educate.
+
+1. Teach BE engineers to read the test reports.
+2. Teach FE engineers to analyze server logs.
+
+---------------------------------------------------------------------
+
+Tool 5. Assign senior engineers.
+I realize it's hard to challenge the idea of delegating constructing the tests to more junior
+engineers. However, it's a hard job to debug the failure when looking at a test report.
+
+Full disclosure: we didn’t do it. In many cases, we still had to call senior engineers - and
+we lost some stability because that took longer.
+
+---------------------------------------------------------------------
+
+Tool 6. Increase visibility.
+Try to improve the developer experience of your engineers during the times when the stability
+requirements are not met. This is one thing we did. It says the test failed, but it also mentions
+the known issues. There is one known issue. This is how the symptoms look like. The workaround is to
+rerun the job.
+
+This is an attempt to tolerate instability. Yes, these failures happened. But if we give people good
+developer experience, these failures might have a very limited impact on their <i>perception</i> of
+the stability.
+
+First: it's hard to calculate the required stability because we're trying to predict human
+perception, which is different for everyone across the company. Even if you're in the green zone,
+there are incidents where people would
+say "I didn't run E2E tests because I know they're flaky.”
+
+Second: we anyway need a way to tolerate the instabilities because every issue significantly drops
+the stability for the short time window.
+
+Fun fact: when we asked people their perception of the stability, it appeared higher than the
+reality.
+
+---------------------------------------------------------------------
+
+Tool 7. Start small.
+We started with three teams right away. It took us time to reach stability because there were just
+too many problems in the beginning.
+<br /><br />[reveal fragment]<br /><br />
+And never go too big :) More tests of this kind bring diminishing returns.
+
+---------------------------------------------------------------------
+
+Conclusions. This is the opposite of simplicity. It's an expensive tool due to a lot of
+organizational work. On every step, we should validate
+the returns on our investment. This is not the only way to test applications.
+
+If we do go this path, we should conscientiously use those tools that I listed. Of
+course there is a chance it works
+out if we just put a bunch of smart people in the room — but that's <i>hope</i>.
+Hope is not a good plan.
