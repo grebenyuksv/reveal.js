@@ -57,6 +57,7 @@ Hakim's open source work is supported by <a href="https://github.com/sponsors/ha
 
 ### Sergii's notes
 
+1. `nvm use`
 1. `node node_modules/reveal-notes-server`
 1. `ngrok tcp 1947`
 1. open http://127.0.0.1:4040/inspect/http
