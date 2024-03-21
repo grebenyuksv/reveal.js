@@ -62,5 +62,6 @@ Hakim's open source work is supported by <a href="https://github.com/sponsors/ha
 1. `ngrok tcp 1947`
 1. open http://127.0.0.1:4040/inspect/http
 1. take that `tcp://[path]` link and open `http://[path]` in the browser
-1. get the notes link like `http://0.tcp.ngrok.io:[port]/notes/[id]` from the browser console and send it to the other device
+1. allow pop-ups
+1. get the notes link like `http://0.tcp.ngrok.io:[port]/notes/[id]` from the browser console (or wait if they open in a tab automatically) and send it to the other device
 1. open the notes link on the other device
