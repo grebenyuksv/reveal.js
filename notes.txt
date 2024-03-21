@@ -30,7 +30,12 @@ So basically problem statement, challenges, solutions, conclusions, questions.
 
 -------------------------------------------------------
 
+
 So, let's start with the problem statement.
+
+We fully automate the in-browser experience of our users.
+A test is a robo user that opens a browser and types in her credit card details.
+We talk to payment providers, process the payment, and she sees the lessons or her balance.
 
 -------------------------------------------------------
 
