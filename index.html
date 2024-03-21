@@ -197,7 +197,9 @@
 					solve, but there is a twist.
 					<br /><br />[reveal fragment]<br /><br />
 					This problem requires <i>fast</i> reaction by different people in different circumstances.
-					So for each of those possible situations, the managerial decisions should be made in advance.
+					So for each of those possible situations, the managerial decisions should be made in advance. This
+					test will fail and when that happens the relevant people should immediately jump into it and
+					investigate.
 					This talk should be relevant for technical leaders or entry-level managers depending on who at a
 					company answers this who does what by when question.
 				</aside>
@@ -470,7 +472,9 @@
 				<p>Analyze every failure</p>
 				<img src="assets/table-actions.png" alt="Screenshot from Spreadsheets" />
 				<aside class="notes">
-					... this. This gives us actionability. We can see in which order to do the improvements and what
+					... this. This gives not only actionability but also the scope (and thus the cost) of the next
+					iteration. We can see in
+					which order to do the improvements and what
 					kind of improvements there are. Be it's technical or people work.
 					This slide says:
 					<br />
@@ -510,9 +514,23 @@
 					We didn’t do it — FE engineers led the project — and we find ourselves in situations where BE people
 					whom we needed to do investigations and code improvements had other priorities.
 					<br />
-					Remember: our goal is to build a stable app. It doesn't work if we just ask front-ended engineers to
-					build stable tests.
-				</aside>
+					I will illustrate this with one example of a specific problem that we still have to be honest with
+					you.
+					We observed specific tests failing randomly. The buttons just weren't showing up where they should.
+					When we talked to the authors of the tests, they couldn't explain it. But they said the buttons
+					should be there because that was an A/B test that got scaled long ago.
+					that the front-end platform team analyzed the reports closer and saw that the back-end was returning
+					to the front-end. The response is saying that that A/B test was not scaled.
+					We talked to the experimentation team. They couldn't explain it because that code was constructed by
+					someone else before the experimentation team was even created.
+					Then we asked the backend platform to help us with the investigation but it was not in their
+					priorities.
+					So now we just live with it. The problem is still there, but because it doesn't strike <i>very</i>
+					often. It's not a high priority for the owners of those mechanisms.
+					<br />
+					I hope this example illustrates why it's not enough to ask FE engineers to build stable tests.
+					We need to make a stable product and that could only be done by people from the entire
+					stack.
 			</section>
 
 			<section>
