@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>reveal.js</title>
+
+	<link rel="stylesheet" href="dist/reset.css">
+	<link rel="stylesheet" href="dist/reveal.css">
+	<link rel="stylesheet" href="dist/theme/black.css">
+
+	<!-- Theme used for syntax highlighted code -->
+	<link rel="stylesheet" href="plugin/highlight/monokai.css">
+
+	<style>
+		.container {
+			display: flex;
+			align-items: center;
+		}
+
+		.col {
+			flex: 1;
+		}
+
+		ul {
+			list-style: none !important;
+		}
+
+		ul p {
+			text-transform: uppercase;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="reveal" data-preply-ds-theme="tokyo-ui">
+		<div class="slides">
+			<section>
+				<aside class="notes">
+					Empty slide.
+				</aside>
+			</section>
+
+			<section>
+				<h2>To E2E-Test or Not To E2E-Test?<br />That Was the Question</h2>
+				<aside class="notes">
+					Hello, everyone, happy to see you all here today.
+					I will talk about end-to-end tests. At Preply we have built them successfully, but we learned a lot
+					on the way.
+					I will share those learnings with you so that you're in a better position to decide whether you want
+					that for your business.
+			</section>
+			<section>
+				<div class="container">
+
+					<div class="col">
+						<p>🇺🇦 Sergii Grebeniuk</p>
+						<img src="assets/qr-linkedin.png" alt="QR code for LinkedIn profile" />
+						</p>
+						<aside class="notes">
+							My name is Sergii.
+							I'm Ukrainian, living in Poland.
+							I've been working in the so-called FE Platform team at Preply for almost seven years, mostly
+							constructing build pipelines and developer tooling, and leading cross-team projects.
+							This QR code leads to my LinkedIn profile.
+						</aside>
+					</div>
+
+					<div class="col">
+						<p>
+							<img src="assets/sergii.jpg" alt="Sergii's photo" />
+						</p>
+						<aside class="notes">
+							I've been at Preply for around seven years, mostly building, mostly working on build
+							pipelines and
+							developer tooling, and leading cross-team projects.
+						</aside>
+					</div>
+			</section>
+
+			<section>
+				<ol>
+					<li>Definition of Done</li>
+					<li>Challenges</li>
+					<li>Solutions</li>
+					<li>Q&A</li>
+				</ol>
+				<aside class="notes">
+					Here is the structure of this. It should all take around 20 minutes plus 5 minutes for
+					questions in the end.
+					So basically problem statement, challenges, solutions, conclusions, questions.
+				</aside>
+			</section>
+
+			<section>
+				<h2>Definition of Done</h2>
+				<aside class="notes">
+					So, let's start with the problem statement.
+
+					We fully automate the in-browser experience of our users.
+					A test is a robo user that opens a browser and types in her credit card details.
+					We talk to payment providers, process the payment, and she sees the lessons or her balance.
+				</aside>
+			</section>
+
+			<!-- <section data-background-video="assets/test-recording.mp4" data-background-size="contain">
+				<aside class="notes">
+					[Check if the recording is playing]
+					<br />
+					Here is a recording what we want.
+					In this example, the robo-user buys a subscription. He gives us his credit card, we
+					process the payment, the user sees the lessons or his balance.
+				</aside>
+			</section> -->
+
+			<section>
+				<ul>
+					<li>Verify every deployment</li>
+					<li class="fragment">
+						Cross-service
+						<br />
+						Cross-stack
+					</li>
+					<li class="fragment">
+						The most important user journeys
+						<br />
+						Happy paths
+					</li>
+					<li class="fragment">
+						Playwright
+						<img src="assets/playwright.png" alt="Playwright logo"
+							style="height: 1.5em; vertical-align: bottom; margin: 0;" />
+						<br />
+						100 suites
+					</li>
+					<aside class="notes">
+						We verify every deployment that way. If anything fails, the deployment stops.
+						<br /><br />[reveal fragment]<br /><br />
+						Those checks are cross-service both horizontally and vertically.
+						The users go through different front ends, which call different back ends, and in some cases
+						even different databases under the hood.
+						<br /><br />[reveal fragment]<br /><br />
+						We only cover the happy paths of the most important user journeys.
+						This is the top level of the testing pyramid, testing trophy, or any other geometrical shape
+						<br /><br />[reveal fragment]<br /><br />
+						We do that with playwright, which is sort of a state-of-the art technology for these things, and
+						we have around 100 suites.
+					</aside>
+			</section>
+
+			<section>
+				<ul>
+					<p>What this is <b>not</b> about</p>
+					<li>Mock 3rd-party services</li>
+					<li>Mock in-house services</li>
+					<li>Only test the changing functionality</li>
+				</ul>
+				<aside class="notes">
+					This is about E2E tests, the highest level possible.
+					We neither mock 3rd-party services (e.g. payment providers), nor in-house services (e.g. our own
+					APIs).
+					Neither this is about detecting what we change and only retesting that.
+					those would all be lower level tests. I'm not a fan of the term integration tests — but that would
+					be that direction.
+					<br />
+					Spoiler: that all would not be wrong.
+				</aside>
+			</section>
+
+			<section>
+				<ul>
+					<p>What this is <b>not</b> about either</p>
+					<li>No timeouts</li>
+					<li>Careful with re-tries</li>
+					<li>Ensure determinism</li>
+				</ul>
+				<aside class="notes">
+					Now this is not about the tactical technical things like avoiding timeouts or retries. These are
+					<i>relatively easy</i> technical problems compared to ... [switch slide]
+				</aside>
+			</section>
+
+			<section>
+				<ul>
+					<p>What this <b>is</b> about</p>
+					<li>Who does What by When</li>
+					<li><span style="visibility: hidden;">Who does What by When </span><b class="fragment fade-up">in
+							Which Case</b></li>
+				</ul>
+				<aside class="notes">
+					... the organizational problems, which are harder and which are gonna be my focus.
+					Building those tests <i>technically</i> is not rocket science whatsoever, whereas who does what by
+					when has to be answered meticulously.
+					<br />
+					<br />
+					This Who-does-What-by-When is a definition of management, which resonates with me a lot (it's not
+					mine, I heard it somewhere). Just think of it for a second: who does what by when. This is sort of
+					cool,
+					huh? I hope this resonates with you as much as it does with me.
+					<br />
+					So, in my opinion, <i>this</i> is the hardest problem that we have to
+					solve, but there is a twist.
+					<br /><br />[reveal fragment]<br /><br />
+					This problem requires <i>fast</i> reaction by different people in different circumstances.
+					So for each of those possible situations, the managerial decisions should be made in advance. This
+					test will fail and when that happens the relevant people should immediately jump into it and
+					investigate.
+					This talk should be relevant for technical leaders or entry-level managers depending on who at a
+					company answers this who does what by when question.
+				</aside>
+			</section>
+
+			<section data-background-image="assets/kittens/2.webp" data-background-opacity="0.2">
+				<h2>Challenges</h2>
+				<aside class="notes">
+					Now let's see why it is hard.
+					The problem is that many things have to happen simultaneously.
+					It's like trying to make all these cute kittens sit in a row for a picture.
+					<br />
+					There's gonna be <b>three</b> challenges.
+				</aside>
+			</section>
+
+			<section>
+				<ul>
+					<li>😊 <b>All tests</b> pass in 98% cases</li>
+					<li>🙂 <b>All tests</b> pass in 90% cases</li>
+					<li>😐 <b>All tests</b> pass in 80% cases</li>
+					<li>😞 &lt80% = 0%</li>
+				</ul>
+				<aside class="notes">
+					Before we start on the challenges.
+					<br />
+					Let's align around the basics. Stable tests mean no false positives.
+					Measuring is easy: we run them all regularly on master.
+					Your mileage may vary, but this is what works for us:
+					<br />
+					- <i>All tests</i> pass in 98% cases — enough to block merges or deployments
+					<br />
+					- <i>All tests</i> pass in 90% — will be used as safety net by most engineers
+					<br />
+					- <i>All tests</i> passed in 80% cases — will be used as safety net by a half of engineers
+					<br />
+					- &lt80% is absolutely useless
+					<br />
+					Important nuance: we are calculating how many <i>perfect
+						pictures</i> we get. Not how aligned individual kittens are on average. One naughty kitten ruins
+					the
+					entire picture. If that's always the case, the stability is zero.
+					<br />
+					<br />
+					Now let's see why that goal is very ambitious.
+				</aside>
+			</section>
+
+			<section>
+				<ul>
+					<li>
+						14 runs per day:
+					</li>
+					<li>1 failure → 92% daily stability</li>
+					<li>2 failures → 97% weekly stability</li>
+					<li>7 failures → 97% monthly stability</li>
+				</ul>
+				<aside class="notes">
+					Challenge number one: there is little room for error.
+					We run the tests on master 14 times per day, which roughly means "constantly within our
+					business hours in different time zones".
+					The error budget barely exists. One failure ruins the stats for the entire day.
+					Only 6 failures monthly are tolerable.
+					<br />
+					Important nuance: we deploy continuously. A deployment happens automatically once a PR gets merged
+					to master. There are dozens of deployments every day. For those who deploy every day or every week,
+					this challenge is not so hard.
+				</aside>
+			</section>
+
+			<section>
+				<ul>
+					<li>Test stability = test stability × app stability</li>
+					<li>
+						<ul>
+							<li class="fragment">App stability =
+								<ul>
+									<li>
+										<span class="fragment">
+											product features' stability × ...
+										</span>
+										<br />
+										<span class="fragment">
+											staging infra stability × ...
+										</span>
+										<br />
+										<span class="fragment">
+											3rd-party components' stability × ...
+										</span>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<aside class="notes">
+					Challenge number two: there are many moving parts.
+					This comes naturally to you once you think of it - but not everyone bothers to think.
+					The problem statement does not sound like "Build Stable Tests". It's "Build a Stable App" in the
+					first
+					place.
+					<br /><br />[reveal fragment]<br /><br />
+					Now building a stable app does sound as hard as it is.
+					<br /><br />[reveal fragment]<br /><br />
+					It's the business logic stability.
+					<br /><br />[reveal fragment]<br /><br />
+					Multiplied by infrastructure stability.
+					<br /><br />[reveal fragment]<br /><br />
+					Multiplied by 3rd-party components' stability. And so on.
+				</aside>
+			</section>
+
+			<!-- rewrite that table in a way that the right column is vertically aligned in the middle of the entire table. -->
+			<section>
+				<!-- A table of two columns. -->
+				<table>
+					<tr>
+						<th><b>Production</b></th>
+						<th><b>E2E Tests</b></th>
+					</tr>
+					<tr>
+						<td>SEV-1 incidents affect all users</td>
+						<!-- Remove the bottom border. -->
+						<td class="fragment" data-fragment-index="4" rowspan="3"
+							style="vertical-align: middle; border-bottom: none;">
+							Every failure affects everyone
+						</td>
+					</tr>
+					<tr>
+						<td>SEV-2-SEV-4 incident affect <b>some</b> users</td>
+					</tr>
+					<tr>
+						<td>Bugs are not incidents</td>
+					</tr>
+				</table>
+				<aside class="notes">
+					Now, among all the challenges, this is <b>the</b> challenge.
+					Challenge number three, the blast radius.
+					A single real user never uses all features of the product — but any E2E test failure blocks
+					<i>the entire</i> company.
+					This means the testing environment has to be in a way <i>more stable</i> than production.
+				</aside>
+			</section>
+
+			<section>
+				<ul>
+					<li>Little room for error</li>
+					<li>Many moving parts</li>
+					<li>Blast radius</li>
+				</ul>
+				<aside class="notes">
+					So once again three big challenges.
+				</aside>
+			</section>
+
+			<section data-background-image="assets/kittens/res-2.webp" data-background-opacity="0.2">
+				<h2>Solutions</h2>
+				<aside class="notes">
+					Now let's see how we solved those.
+					I'll give you a toolbox of <b>seven</b> instruments. Most of this, we learned the hard way.
+					Most of these, things we didn't do. In my opinion we succeeded (well, yes, in my opinion, we
+					succeeded 🙂) because a) we still did many things well b) our mistakes were compensated by several
+					factors:
+					1. some people voluntarily worked overtime;
+					2. some people went far beyond their tech stack and business logic;
+					3. we were somewhat lucky. All possible issues just didn't happen at the same time. 🙂
+				</aside>
+			</section>
+
+			<section>
+				<p>Increase urgency</p>
+				<img src="assets/slack-1.png" alt="Screenshot from Slack" />
+				<aside class="notes">
+					Tool 1. Increase urgency.
+					<br />
+					It's <i>natural</i> that tests are less important than real users.
+					We have to very explicitly define who does what by when when tests fail. Don't just rely on culture.
+					This is <i>good culture</i>.
+					Our goal requires <i>more</i>.
+				</aside>
+			</section>
+
+			<section>
+				<p>Increase urgency</p>
+				<div style="height: 60vh;">
+					<svg width="100%" height="100%" viewBox="0 0 100 100">
+						<text x="50" y="25" text-anchor="middle" font-size="8" fill="white">Red tests don't block
+							deploys</text>
+						<text x="10" y="45" text-anchor="middle" font-size="8" fill="white">
+							Instabilities are
+							<tspan x="10" y="55">
+								not incidents
+							</tspan>
+						</text>
+						<text x="90" y="45" text-anchor="middle" font-size="8" fill="white">No one is paged
+							<tspan x="90" y="55">
+								when tests fail
+							</tspan>
+						</text>
+						<text x="50" y="75" text-anchor="middle" font-size="8" fill="white">Tests are unstable</text>
+
+						<!-- Arrows. In a cycle. -->
+						<path d="M72,30 L75,33" fill="none" stroke="green" marker-end="url(#arrow-small)" />
+						<path d="M77,60 L74,63" fill="none" stroke="green" marker-end="url(#arrow-small)" />
+						<path d="M28,66 L25,63" fill="none" stroke="green" marker-end="url(#arrow-small)" />
+						<path d="M23,36 L26,33" fill="none" stroke="green" marker-end="url(#arrow-small)" />
+						<defs>
+							<marker id="arrow-small" markerWidth="5" markerHeight="5" refX="0" refY="2" orient="auto"
+								markerUnits="strokeWidth">
+								<path d="M0,0 L0,4 L4,2 z" fill="green" />
+							</marker>
+						</defs>
+					</svg>
+				</div>
+				<aside class="notes">
+					There is a widespread belief: tests are optional because they are unstable.
+					The real causality is in the opposite direction.
+					We must instruct people to pause other work for investigation.
+					We must compensate people if it's outside of working hours. Especially if the company operates in
+					distant time zones.
+					If that is unsustainable: we turn everything off, we analyze what we are doing wrong, and we turn it
+					on again.
+					If we have no ideas, we either reduce the amount of tests or we conclude that this is not for us and
+					we shut down the entire initiative.
+					<br />
+					So this one I called increase the urgency.
+				</aside>
+			</section>
+
+			<section>
+				<p>Analyze every failure</p>
+				<aside class="notes">
+					Tool 2. Analyze every failure.
+					I will show you two terrible slides. You don't have to read them, just grasp
+					the structure. This is
+					just a helicopter view of
+					what it looked like.
+				</aside>
+			</section>
+
+			<section>
+				<p>Analyze every failure</p>
+				<!-- <section data-background-image="assets/table-failures.png" data-background-size="contain"> -->
+				<img src="assets/table-failures.png" alt="Screenshot from Spreadsheets" />
+				<aside class="notes">
+					<br />
+					Analyze:
+					<br />
+					- [horizontal gesture] Which part of the product?
+					<br />
+					- [vertical gesture] Which part of the stack?
+					<br />
+					- How many failures?
+					<br />
+					- Who?
+					<br />
+					- How to prevent it in the future?
+					<br />
+
+					I admit this idea of analyzing every failure is fairly obvious. What is not obvious and what scared
+					me in the very beginning is it might seem that it's not worth trying because there might be too many
+					errors.
+
+					It appeared to be alright. In our reality, for a combination of reasons, it was a somewhat full-time
+					job, but it still fit into one brain.
+
+					If we do this, we can get to... [next slide]
+				</aside>
+			</section>
+
+			<section>
+				<!-- <section data-background-image="assets/table-actions.png" data-background-size="contain"> -->
+				<p>Analyze every failure</p>
+				<img src="assets/table-actions.png" alt="Screenshot from Spreadsheets" />
+				<aside class="notes">
+					... this. This gives not only actionability but also the scope (and thus the cost) of the next
+					iteration. We can see in
+					which order to do the improvements and what
+					kind of improvements there are. Be it's technical or people work.
+					This slide says:
+					<br />
+					- 13 failures in Q2 wouldn't have happened if the checks were mandatory for pull requests (which was
+					not the case)
+					- 10 can be fixed by guiding people how to write deterministic tests
+					- 11 were one-off glitches which we have to live with because it brings unreasonable
+					overhead to fix them. That happens too.
+					<br />
+					Note: identifying the who does not by any means violate the blameless culture (at least because
+					there's <i>just no blame</i> in saying, e.g. We weren't able to fetch Docker images because
+					Microsoft registry was down so the FE Platform team should build a cache).
+					We can think of it like this: we are measuring processes, not people. We don't have to measure
+					people because we just assume good intention.
+					<br />
+					So this was about analyzing every failure.
+					<br />
+					And it does not work without tool 3.
+				</aside>
+			</section>
+
+			<section>
+				<p>Make accountable people from the entire stack</p>
+
+				<div style="height: 60vh;">
+					<svg width="100%" height="100%" viewBox="0 0 100 100">
+						<circle cx="32" cy="30" r="18" fill="none" stroke="white" />
+						<circle cx="68" cy="30" r="18" fill="none" stroke="white" />
+						<circle cx="50" cy="61" r="18" fill="none" stroke="white" />
+						<text x="32" y="33" text-anchor="middle" font-size="10" fill="white">BE</text>
+						<text x="68" y="33" text-anchor="middle" font-size="10" fill="white">FE</text>
+						<text x="50" y="64" text-anchor="middle" font-size="10" fill="white">SRE</text>
+					</svg>
+				</div>
+
+				<aside class="notes">
+					Tool 3. Please, make accountable people from the entire technical stack, I can't stress this more.
+					<br />
+					We didn’t do it — FE engineers led the project — and we find ourselves in situations where BE people
+					whom we needed to do investigations and code improvements had other priorities.
+					<br />
+					I will illustrate this with one example of a specific problem that we still have to be honest with
+					you.
+					We observed specific tests failing randomly. The buttons just weren't showing up where they should.
+					When we talked to the authors of the tests, they couldn't explain it. But they said the buttons
+					should be there because that was an A/B test that got scaled long ago.
+					that the front-end platform team analyzed the reports closer and saw that the back-end was returning
+					to the front-end. The response is saying that that A/B test was not scaled.
+					We talked to the experimentation team. They couldn't explain it because that code was constructed by
+					someone else before the experimentation team was even created.
+					Then we asked the backend platform to help us with the investigation but it was not in their
+					priorities.
+					So now we just live with it. The problem is still there, but because it doesn't strike <i>very</i>
+					often. It's not a high priority for the owners of those mechanisms.
+					<br />
+					I hope this example illustrates why it's not enough to ask FE engineers to build stable tests.
+					We need to make a stable product and that could only be done by people from the entire
+					stack.
+			</section>
+
+			<section>
+				<p>Educate</p>
+
+				<div style="height: 60vh;">
+					<svg width="100%" height="100%" viewBox="0 0 100 100">
+						<circle cx="32" cy="30" r="18" fill="none" stroke="rgba(255,255,255,0.05)" />
+						<circle cx="68" cy="30" r="18" fill="none" stroke="white" />
+						<circle cx="50" cy="61" r="18" fill="none" stroke="white" />
+						<circle cx="36" cy="34" r="24" fill="none" stroke-width="4" stroke="green" />
+						<text x="32" y="33" text-anchor="middle" font-size="10" fill="white">BE</text>
+						<text x="71" y="33" text-anchor="middle" font-size="10" fill="white">FE</text>
+						<text x="50" y="68" text-anchor="middle" font-size="10" fill="white">SRE</text>
+					</svg>
+				</div>
+				<aside class="notes">
+					Tool 4. Educate.
+
+					1. Teach BE engineers to read the test reports.
+					2. Teach FE engineers to analyze server logs.
+				</aside>
+			</section>
+
+			<section>
+				<p>Assign senior engineers</p>
+
+				<div style="height: 60vh;">
+					<svg width="100%" height="100%" viewBox="0 0 100 100">
+						<circle cx="32" cy="30" r="18" fill="none" stroke="rgba(255,255,255,0.1)" />
+						<circle cx="68" cy="30" r="18" fill="none" stroke="rgba(255,255,255,0.1)" />
+						<circle cx="50" cy="61" r="18" fill="none" stroke="rgba(255,255,255,0.1)" />
+						<circle cx="32" cy="30" r="24" fill="none" stroke-width="4" stroke="green" />
+						<text x="32" y="33" text-anchor="middle" font-size="10" fill="white">BE</text>
+						<text x="68" y="33" text-anchor="middle" font-size="10" fill="white">FE</text>
+						<text x="50" y="64" text-anchor="middle" font-size="10" fill="white">SRE</text>
+					</svg>
+				</div>
+				<aside class="notes">
+					Tool 5. Assign senior engineers.
+					I realize it's hard to challenge the idea of delegating constructing the tests to more junior
+					engineers. However, it's a hard job to debug the failure when looking at a test report.
+
+					Full disclosure: we didn’t do it. In many cases, we still had to call senior engineers - and
+					we lost some stability because that took longer.
+				</aside>
+			</section>
+
+			<section>
+				<p>Increase visibility</p>
+				<img src="assets/known-errors.png" alt="Screenshot from GH" />
+				<aside class="notes">
+					Tool 6. Increase visibility.
+					Try to improve the developer experience of your engineers during the times when the stability
+					requirements are not met. This is one thing we did. It says the test failed, but it also mentions
+					the known issues. There is one known issue. This is how the symptoms look like. The workaround is to
+					rerun the job.
+
+					This is an attempt to tolerate instability. Yes, these failures happened. But if we give people good
+					developer experience, these failures might have a very limited impact on their <i>perception</i> of
+					the stability.
+
+					First: it's hard to calculate the required stability because we're trying to predict human
+					perception, which is different for everyone across the company. Even if you're in the green zone,
+					there are incidents where people would
+					say "I didn't run E2E tests because I know they're flaky.”
+
+					Second: we anyway need a way to tolerate the instabilities because every issue significantly drops
+					the stability for the short time window.
+
+					Fun fact: when we asked people their perception of the stability, it appeared higher than the
+					reality.
+				</aside>
+			</section>
+
+			<section>
+				<p>Start small</p>
+				<p class="fragment">and never go too big 🙂</p>
+				<aside class="notes">
+					Tool 7. Start small.
+					We started with three teams right away. It took us time to reach stability because there were just
+					too many problems in the beginning.
+					<br /><br />[reveal fragment]<br /><br />
+					And never go too big :) More tests of this kind bring diminishing returns.
+				</aside>
+			</section>
+
+			<section>
+				<ul>
+					<li>Inrease urgency</li>
+					<li>Analyze every failure</li>
+					<li>Make accountable people from the entire stack</li>
+					<li>Educate</li>
+					<li>Assign senior engineers</li>
+					<li>Increase visibility</li>
+					<li>Start small</li>
+				</ul>
+				<aside class="notes">
+					Conclusions. This is the opposite of simplicity. It's an expensive tool due to a lot of
+					organizational work. On every step, we should validate
+					the returns on our investment. This is not the only way to test applications.
+
+					If we do go this path, we should conscientiously use those tools that I listed. Of
+					course there is a chance it works
+					out if we just put a bunch of smart people in the room — but that's <i>hope</i>.
+					Hope is not a good plan.
+				</aside>
+			</section>
+
+			<section>
+				<h3>Q&A</h3>
+			</section>
+		</div>
+	</div>
+
+	<script src="dist/reveal.js"></script>
+	<script src="plugin/notes/notes.js"></script>
+	<script src="plugin/markdown/markdown.js"></script>
+	<script src="plugin/highlight/highlight.js"></script>
+	<script>
+		// More info about initialization & config:
+		// - https://revealjs.com/initialization/
+		// - https://revealjs.com/config/
+		Reveal.initialize({
+			hash: true,
+			controls: false,
+			hideCursorTime: 50,
+
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+		});
+	</script>
+	<script>
+		// Go forward on left mouse click.
+		document.addEventListener('click', function (event) {
+			Reveal.next();
+		});
+		// Go backward on the right mouse click.
+		document.addEventListener('contextmenu', function (event) {
+			Reveal.prev();
+			// Prevent the context menu from showing up.
+			event.preventDefault();
+		});
+	</script>
+	<script src="socket.io/socket.io.js"></script>
+	<script src="node_modules/reveal-notes-server/client.js"></script>
+</body>
+
+</html>
